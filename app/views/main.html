@@ -1,5 +1,8 @@
 <div class="hero-unit">
   <h1>Ahoy a map</h1>
+  <ul>
+    <li><a ng-click="addMarker()">foo</a></li>
+  </ul>
   <div id="map_canvas" ui-map="map" class="map"
     ui-event="{'map-click': 'addMarker($event)'}"
     ui-options="mapOptions">

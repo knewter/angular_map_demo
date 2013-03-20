@@ -9,10 +9,10 @@ angular.module('angularMapDemoApp')
       zoom: 15,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
-    $scope.addMarker = function($event){
+    $scope.addMarker = function(){
       $scope.markers.push(new google.maps.Marker({
         map: $scope.map,
-        positon: $event.latlng
+        position: new google.maps.LatLng(35, 35)
       }));
     };
   });
