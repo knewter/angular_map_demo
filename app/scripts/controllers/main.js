@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularMapDemoApp')
-  .controller('MainCtrl', function ($scope) {
+  .controller('MainCtrl', function ($scope, $http, $timeout) {
     $scope.markers = [
     ];
     $scope.mapOptions = {
@@ -16,24 +16,20 @@ angular.module('angularMapDemoApp')
       }));
     };
     $scope.updateMarkers = function(){
-      var returned = {
-        people: [
-          {
-            name: null,
-            imei: "351746052214411",
-            lat: "36.1612292099744",
-            long: "-86.7808193620294"
-          },
-          {
-            name: null,
-            imei: "353918051258594",
-            lat: "33.47503485",
-            long: "-86.82233522"
-          }
-        ]
-      }
-      $scope.markers = extractMarkersFromPeople(returned.people);
+      $http.jsonp('http://perlocmain.heroku.com/locate.js?callback=JSON_CALLBACK').
+        success(function(data){
+          $scope.markers = extractMarkersFromPeople(data.people);
+        })
     };
+
+    var updateWithTimeout = function(){
+      $timeout(function(){
+        $scope.updateMarkers();
+        updateWithTimeout();
+      }, 5000);
+    };
+
+    updateWithTimeout();
 
     var extractMarkersFromPeople = function(people){
       return people.map(function(p){
